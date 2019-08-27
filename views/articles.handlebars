@@ -1,0 +1,19 @@
+<main>
+{{!-- post artciles that are saved here --}}
+<div id="listOfArticles">
+    <h3>Articles</h3>
+    <ul id="list-of-articles" class="list-group">
+      {{#each articles}}
+      <li data-id="{{this.id}}" class="list-group-item">
+        <a id="articleLink" href="articles/{{this.id}}">{{this.title}}</a>
+        <button id="deleteBtn" class="btn btn-danger delete">ｘ</button>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+    {{!-- have delete button for article --}}
+
+    {{!-- button to view notes (modal) --}}
+        {{!-- button to delete note --}}
+</main>    
