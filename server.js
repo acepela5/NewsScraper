@@ -36,6 +36,9 @@ mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true }
 app.get("/", function(req, res){
     res.redirect("index");
 });
+app.get("/articles", function(req, res){
+    res.render("articles");
+});
 
 
 // GET Articles from Buzzfeed Website (the scrape)
