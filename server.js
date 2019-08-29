@@ -71,11 +71,12 @@ app.get("/scrape", function(req, res){
             
         });
        res.redirect("index")
+       console.log("SCRAPE DONE DID")
     });
 });
 
 //GET Articles from Database
-app.get("/articles", function(req, res){
+app.get("/index", function(req, res){
     console.log("/articles GET")
     db.Article.find({saved: false}).then(function(dbArticle){
         //just for info, needs to be in json
