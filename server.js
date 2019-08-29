@@ -28,25 +28,41 @@ app.set("view engine", "handlebars");
 //Make Public as a Static Folder
 app.use(express.static("public"));
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-mongoose.connect(MONGODB_URI);
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+// mongoose.connect(MONGODB_URI, {useNewURLParser: true, useCreateIndex: true, useFindAndModify: false});
+mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
+
+//route to the index page
+app.get("/", function(req, res){
+    res.redirect("index");
+});
+
 
 // GET Articles from Buzzfeed Website (the scrape)
 app.get("/scrape", function(req, res){
     axios.get("https://www.buzzfeed.com/").then(function(response){
         var $ = cheerio.load(response.data);
         // Grab Link (a.js-card_ _link.link-gray)
-        $("a.js-card__link").each(function(i, element){
+       // $("a.js-card__link").each(function(i, element){
+       console.log("SCRAPING")     
+       $(".story-card").each(function(i, element){
             var result = {};
             //Add Text and Href, Save as Properties
-            result.title = $(this)
+            result.title = $(this).find("a.js-card__link")
                 // .children("a")
                 .text();
-            result.link = $(this)
+            result.link = $(this).find("a.js-card__link")
                 // .children("a")
                 .attr("href");
+             result.img = $(this).find(".card__image img")
+                // .children("a")
+                .attr("src");
+
+                result.description = $(this).find("p.js-card__description")
+                // .children("a")
+                .text(); 
             //Create Article
-            console.log("creating article...")
+            console.log("creating article...", result)
             db.Article.create(result).then(function(dbArticle){
                 console.log(dbArticle);
             }).catch(function(err){
@@ -54,14 +70,19 @@ app.get("/scrape", function(req, res){
             });
             
         });
-        res.send("Scrape Complete");
+       res.redirect("index")
     });
 });
 
 //GET Articles from Database
 app.get("/articles", function(req, res){
-    db.Article.find({}).then(function(dbArticle){
-        res.json(dbArticle);
+    console.log("/articles GET")
+    db.Article.find({saved: false}).then(function(dbArticle){
+        //just for info, needs to be in json
+        var obj={
+            articles: dbArticle
+        }
+        res.render("index", obj);
     }).catch(function(err){
         res.json(err);
     });
@@ -69,6 +90,7 @@ app.get("/articles", function(req, res){
 
 // GET Specific Article (by id)
 app.get("/articles/:id", function(req, res){
+    console.log("/articles GET ID")
     db.Article.findOne({_id: req.params.id}).populate("note").then(function(dbArticle){
         res.json(dbArticle);
     }).catch(function(err){
@@ -76,10 +98,46 @@ app.get("/articles/:id", function(req, res){
     });
 
 });
+// CREATE Saved Articles
+// app.put("/index/:id", )
+
+//Route for saving/updating Article's note
+app.post("/articles/:id", function(req, res) {
+    db.Note.create(req.body)
+      .then(function(dbNote) {
+        return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+      })
+      .then(function(dbArticle) {
+          console.log("Article updated successfully")
+        res.json(dbArticle);
+      })
+      .catch(function(err) {
+        res.json(err);
+      });
+  });
+
+
+// POST Saved Articles to Index
+app.post("/index", function(req, res){
+    console.log("/api/index POST")
+    db.Article.create(req.body).then(function(dbArticle){
+        res.json(dbArticle);
+    });
+});
+
+// POST Saved Articles to Article Page
+app.post("/articles", function(req, res){
+    console.log("/api/articles POST")
+    db.Article.create(req.body).then(function(dbArticle){
+        res.json(dbArticle);
+    });
+});
 
 // POST Note Belonging to Article
 app.post("/articles/:id", function(req, res){
+    console.log("/articles POST BY ID")
     db.Note.create(req.body).then(function(dbNote){
+        console.log("/articles POST BY ID in create")
         return db.Article.findOneAndUpdate({_id:req.params.id}, {note:dbNote._id}, {new:true});
     }).then(function(dbArticle){
         res.json(dbArticle);
@@ -87,6 +145,30 @@ app.post("/articles/:id", function(req, res){
         res.json(err);
     });
 });
+
+// PUT Article in Saved Articles
+app.put("/articles/:id", function(req, res){
+    console.log("/api/articles saved", req.params.id)
+    db.Article.findOneAndUpdate({ __id: req.params.id},
+   {$set:{saved: true}}).then(function(dbArticle){
+       console.log(dbArticle)
+        res.json(dbArticle);
+    }).catch(function(err){
+        console.log(err)
+    });
+});
+
+// DELETE Article By Id
+app.delete("/articles/:id", function(req, res){
+    console.log("/api/articles delete")
+    db.Article.destroy({ where: { id: req.params.id}
+    }).then(function(dbArticle){
+        res.json(dbArticle);
+    });
+});
+
+
+
 
 // Server
 app.listen(PORT, function(){

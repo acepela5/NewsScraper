@@ -1,9 +1,20 @@
 <main>
-{{!-- display scraped articles --}}
-<div class="container">
-    <h2>Articles From BuzzFeed</h2>
-    
-    <div id="articles"></div>
-    {{!-- button to save article --}}
-</div>
-</main>
+{{!-- post artciles that are saved here --}}
+<div id="listOfArticles">
+    <h3>Articles</h3>
+    <ul id="list-of-articles" class="list-group">
+      {{#each articles}}
+      <li data-id="{{this.id}}" class="list-group-item">
+        <a id="articleLink" href="articles/{{this.id}}">{{this.title}}</a>
+        <button id="saveBtn" data-id="{{this.id}}"  class="btn btn-danger">save</button>
+
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+    {{!-- have delete button for article --}}
+
+    {{!-- button to view notes (modal) --}}
+        {{!-- button to delete note --}}
+</main> 
