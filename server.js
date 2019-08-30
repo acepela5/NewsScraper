@@ -165,7 +165,9 @@ app.post("/articles/:id", function(req, res){
     console.log("/articles POST BY ID")
     db.Note.create(req.body).then(function(dbNote){
         console.log("/articles POST BY ID in create")
-        return db.Article.findOneAndUpdate({_id:req.params.id}, {note:dbNote._id}, {new:true});
+        return db.Article.findOneAndUpdate(
+            //possibly need to delete underscore
+            {_id:req.params.id}, {note:dbNote._id}, {new:true});
     }).then(function(dbArticle){
         res.json(dbArticle);
     }).catch(function(err){
@@ -175,7 +177,7 @@ app.post("/articles/:id", function(req, res){
 
 // DELETE Article By Id
 app.delete("/articles/:id", function(req, res){
-    console.log("/api/articles delete")
+    console.log("/articles delete")
     db.Article.destroy({ where: { id: req.params.id}
     }).then(function(dbArticle){
         res.json(dbArticle);

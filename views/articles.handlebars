@@ -4,19 +4,17 @@
     <h3>Saved Articles</h3>
     <ul id="list-of-articles" class="list-group">
       {{#each articles}}
-      {{!-- {{#if saved}} --}}
       <li data-id="{{this.id}}" class="list-group-item">
-        <a id="articleLink" href="articles/{{this.id}}">{{this.title}}</a>
+        {{!-- <a id="articleLink" href="articles/{{this.id}}">{{this.title}}</a> --}}
+        <p data-id="{{this.is}}">{{this.title}} </p>
         <button id="deleteBtn" class="btn btn-danger delete">ｘ</button>
         <button id="note">Note</button>
-        <p>NOTENOTE</p>
+        <div id="notes"></div>
       </li>
-      {{!-- {{/if}} --}}
       {{/each}}
     </ul>
   </div>
 
-    {{!-- have delete button for article --}}
 
     {{!-- button to view notes (modal) --}}
         {{!-- button to delete note --}}
