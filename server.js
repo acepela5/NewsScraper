@@ -37,7 +37,16 @@ app.get("/", function(req, res){
     res.redirect("index");
 });
 app.get("/articles", function(req, res){
-    res.render("articles");
+    db.Article.find({saved: true}).then(function(dbArticle){
+        //just for info, needs to be in json
+        var obj={
+            articles: dbArticle
+        }
+        res.render("articles", obj);
+        console.log(obj.articles, "OBJ.Articles")
+    }).catch(function(err){
+        res.json(err);
+    })
 });
 
 
@@ -97,10 +106,12 @@ app.get("/index", function(req, res){
 
 // GET Specific Article (by id)
 app.get("/articles/:id", function(req, res){
-    console.log("/articles GET ID")
+    console.log("/articles GET ID", req.params.id)
     db.Article.findOne({_id: req.params.id}).populate("note").then(function(dbArticle){
+        console.log('red')
         res.json(dbArticle);
     }).catch(function(err){
+        console.log('blue')
         res.json(err);
     });
 
@@ -126,12 +137,17 @@ app.post("/articles/:id", function(req, res) {
 
 // PUT Article in Saved Articles
 app.put("/articles/:id", function(req, res){
+    console.log('++++++++++++++++++++++++++');
     console.log("/articles saved", req.params.id)
-    db.Article.findOneAndUpdate({ __id: req.params.id},
+    console.log('++++++++++++++++++++++++++');
+
+    db.Article.findOneAndUpdate({ _id: req.params.id},
    {$set:{saved: true}}).then(function(dbArticle){
+       
        console.log(dbArticle)
         res.json(dbArticle);
     }).catch(function(err){
+
         console.log(err)
     });
 });

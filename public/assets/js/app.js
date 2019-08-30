@@ -10,8 +10,8 @@ console.log("APP JS IS CONNECTED")
 // Empty Notes on P Click
 $(document).on("click", "p", function(){
     $("#notes").empty();
-    var thisId = $(this).attr("data-id");
-
+    var thisId = $(this).parent().attr("data-id");
+console.log(thisId)
     //AJAX Call for Articles Page
     $.ajax({
         method: "GET",
@@ -51,7 +51,8 @@ $(document).on("click", "#savenote", function() {
   });
 
 // On Click Save Button
-$(document).on("click", "#saveBtn", function(){
+$(document).on("click", "#saveBtn", function(event){
+    event.preventDefault()
     var thisId = $(this).attr("data-id");
     console.log("id:" , thisId)
     $.ajax({

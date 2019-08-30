@@ -4,13 +4,14 @@
     <h3>Saved Articles</h3>
     <ul id="list-of-articles" class="list-group">
       {{#each articles}}
-      {{#if saved}}
+      {{!-- {{#if saved}} --}}
       <li data-id="{{this.id}}" class="list-group-item">
         <a id="articleLink" href="articles/{{this.id}}">{{this.title}}</a>
         <button id="deleteBtn" class="btn btn-danger delete">ｘ</button>
         <button id="note">Note</button>
+        <p>NOTENOTE</p>
       </li>
-      {{/if}}
+      {{!-- {{/if}} --}}
       {{/each}}
     </ul>
   </div>
