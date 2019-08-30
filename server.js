@@ -62,8 +62,10 @@ app.get("/scrape", function(req, res){
                 .attr("src");
 
                 result.description = $(this).find("p.js-card__description")
+                
                 // .children("a")
                 .text(); 
+                console.log(result.description, "DESCRIPTION")
             //Create Article
             console.log("creating article...", result)
             db.Article.create(result).then(function(dbArticle){
@@ -78,7 +80,7 @@ app.get("/scrape", function(req, res){
     });
 });
 
-//GET Articles from Database
+//GET Articles from Database and display index
 app.get("/index", function(req, res){
     console.log("/articles GET")
     db.Article.find({saved: false}).then(function(dbArticle){
@@ -87,6 +89,7 @@ app.get("/index", function(req, res){
             articles: dbArticle
         }
         res.render("index", obj);
+        console.log(obj.articles, "OBJ.Articles")
     }).catch(function(err){
         res.json(err);
     });
@@ -121,17 +124,21 @@ app.post("/articles/:id", function(req, res) {
   });
 
 
-// POST Saved Articles to Index
-app.post("/index", function(req, res){
-    console.log("/api/index POST")
-    db.Article.create(req.body).then(function(dbArticle){
+// PUT Article in Saved Articles
+app.put("/articles/:id", function(req, res){
+    console.log("/articles saved", req.params.id)
+    db.Article.findOneAndUpdate({ __id: req.params.id},
+   {$set:{saved: true}}).then(function(dbArticle){
+       console.log(dbArticle)
         res.json(dbArticle);
+    }).catch(function(err){
+        console.log(err)
     });
 });
 
 // POST Saved Articles to Article Page
 app.post("/articles", function(req, res){
-    console.log("/api/articles POST")
+    console.log("/articles POST")
     db.Article.create(req.body).then(function(dbArticle){
         res.json(dbArticle);
     });
@@ -147,18 +154,6 @@ app.post("/articles/:id", function(req, res){
         res.json(dbArticle);
     }).catch(function(err){
         res.json(err);
-    });
-});
-
-// PUT Article in Saved Articles
-app.put("/articles/:id", function(req, res){
-    console.log("/api/articles saved", req.params.id)
-    db.Article.findOneAndUpdate({ __id: req.params.id},
-   {$set:{saved: true}}).then(function(dbArticle){
-       console.log(dbArticle)
-        res.json(dbArticle);
-    }).catch(function(err){
-        console.log(err)
     });
 });
 

@@ -31,6 +31,25 @@ $(document).on("click", "p", function(){
     });
 ;})
 
+// On Click Save NOTE
+$(document).on("click", "#savenote", function() {
+    var thisId = $(this).attr("data-id");
+
+    $.ajax({
+      method: "POST",
+      url: "/articles/" + thisId,
+      data: {
+        title: $("#titleinput").val(),
+        body: $("#bodyinput").val()
+      }
+    }).then(function(data) {
+        console.log(data);
+        $("#notes").empty();
+      });
+    $("#titleinput").val("");
+    $("#bodyinput").val("");
+  });
+
 // On Click Save Button
 $(document).on("click", "#saveBtn", function(){
     var thisId = $(this).attr("data-id");
