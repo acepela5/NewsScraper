@@ -23,13 +23,15 @@ console.log(thisId,"#####thisId#####" )
         $("#notes").append("<input id='titleinput' name='title' >");
         $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
         $("#notes").append("<button data-id='" + thisId + "' id='savenote'>Save Note</button>");
-console.log(`THIS IS THE DATA DOT ID ${data.id}`)
 console.log(`THIS IS THE THIS ID ${thisId}`)
+     
+        // if(data.note) {
+        //   $("#savedtitle").append("<p>" + data.note.title + "</p>");
+        //   $("#savedNotes").append("<p>" + data.note.body + "</p>");
+        //     $("#savedNotes").val(data.note.title);
+        //     $("#savedbody").val(data.note.body);
 
-        if(data.note) {
-            $("#titleinput").val(data.note.title);
-            $("#bodyinput").val(data.note.body);
-        }
+        // }
     });
 ;})
 

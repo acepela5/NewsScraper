@@ -36,9 +36,10 @@ mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true }
 app.get("/", function(req, res){
     res.redirect("index");
 });
+//get articles that have been saved
 app.get("/articles", function(req, res){
+    console.log(`articles that have been save$$$$$$`)
     db.Article.find({saved: true}).then(function(dbArticle){
-        //just for info, needs to be in json
         var obj={
             articles: dbArticle
         }
@@ -66,7 +67,7 @@ app.get("/scrape", function(req, res){
             result.link = $(this).find("a.js-card__link")
                 // .children("a")
                 .attr("href");
-             result.img = $(this).find(".card__image img")
+             result.img = $(this).find(".card__image.alt src")
                 // .children("a")
                 .attr("src");
 
@@ -91,7 +92,7 @@ app.get("/scrape", function(req, res){
 
 //GET Articles from Database and display index
 app.get("/index", function(req, res){
-    console.log("/articles GET")
+    console.log("/articles GET?????????")
     db.Article.find({saved: false}).then(function(dbArticle){
         //just for info, needs to be in json
         var obj={
@@ -116,8 +117,7 @@ app.get("/articles/:id", function(req, res){
     });
 
 });
-// CREATE Saved Articles
-// app.put("/index/:id", )
+
 
 //Route for saving/updating Article's note
 app.post("/articles/:id", function(req, res) {
@@ -126,7 +126,7 @@ app.post("/articles/:id", function(req, res) {
         return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
       })
       .then(function(dbArticle) {
-          console.log("Article updated successfully")
+          console.log("Article updated successfully******************")
         res.json(dbArticle);
       })
       .catch(function(err) {
@@ -162,7 +162,7 @@ app.post("/articles", function(req, res){
 
 // POST Note Belonging to Article
 app.post("/articles/:id", function(req, res){
-    console.log("/articles POST BY ID")
+    console.log("/articles POST BY ID&&&&&&&&&&&&")
     db.Note.create(req.body).then(function(dbNote){
         console.log("/articles POST BY ID in create")
         return db.Article.findOneAndUpdate(

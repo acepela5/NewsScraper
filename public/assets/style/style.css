@@ -1,3 +1,41 @@
+/* for the hover text from W3 Schools%%%%%% */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #f57c00;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: fixed;
+  right: 63px;
+  top: 234px;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #f57c00 transparent;
+}
+/* for the hover text%%%%%% */
+/* for the notes ####### */
 #notes {
   float: right;
   width: 30%;
@@ -14,4 +52,20 @@ input {
 textarea {
   height: 200px;
   font-size: 18px;
+}
+/* for the notes###### */
+#hive {
+height: 70px;
+width: 70px;
+}
+
+#bee {
+  position: fixed;
+  height: 150px;
+  width: 150px;
+  right: 50px;
+}
+
+#deleteBtn, #note, #saveBtn {
+  margin-bottom: 50px;
 }
