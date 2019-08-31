@@ -1,24 +1,36 @@
 <main>
   <div class="container">
-{{!-- post artciles that are saved here --}}
-<div id="listOfArticles">
-    <h3>Saved Articles</h3>
-    <ul id="list-of-articles" class="list-group">
-      {{#each articles}}
-      <li data-id="{{this.id}}" class="list-group-item">
-        <img src="{{this.img}}">
-       <strong>TITLE</strong>
-        <p data-id="{{this.id}}">{{this.title}} </p>
-        <strong>DESCRIPTION</strong>
-        <p >{{description}}</p>
-        <button id="deleteBtn"  data-id="{{this.id}}" class="btn orange darken-4">ｘ</button>
-        <button id="note" class="btn orange darken-1">Note</button>
+    {{!-- post artciles that are saved here --}}
+    <div id="listOfArticles">
+      <h3>Saved Articles</h3>
+      <ul id="list-of-articles" class="list-group">
+        {{#each articles}}
+        <li data-id="{{this.id}}" class="list-group-item">
+                    <img id="flower" src="/assets/images/flower2.png">
+
+          <img id="articleImg" src={{this.img}}>
+
+          <h5 data-id="{{this.id}}">{{this.title}} </h5>
+          <p>{{description}}</p>
+          <button id="deleteBtn" data-id="{{this.id}}" class="btn orange darken-4">ｘ</button>
+          <button id="note" class="btn orange darken-1">Note</button>
+          {{!-- <div id="notes"></div> --}}
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+      <div class="modal-content">
         <div id="notes"></div>
-      </li>
-      {{/each}}
-    </ul>
-  </div>
-{{!-- 
+        <div id="oldNotes"></div>
+      </div>
+      <div class="modal-footer">
+       </div>
+    </div>
+
+    {{!-- 
 <div id="savedNotes">
   <h3>saved notes</h3>
   <ul id="list-of-notes" class="list-group">
@@ -32,8 +44,6 @@
   </ul>
 </div> --}}
 
-    {{!-- button to view notes (modal) --}}
-        {{!-- button to delete note --}}
 
-        </div>
-</main>    
+  </div>
+</main>

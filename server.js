@@ -1,5 +1,3 @@
-console.log("Server.JS Running")
-
 var express = require("express");
 var exphbs = require("express-handlebars");
 var mongoose = require("mongoose");
@@ -44,7 +42,6 @@ app.get("/articles", function(req, res){
             articles: dbArticle
         }
         res.render("articles", obj);
-        console.log(obj.articles, "OBJ.Articles")
     }).catch(function(err){
         res.json(err);
     })
@@ -55,27 +52,26 @@ app.get("/articles", function(req, res){
 app.get("/scrape", function(req, res){
     axios.get("https://www.buzzfeed.com/").then(function(response){
         var $ = cheerio.load(response.data);
-        // Grab Link (a.js-card_ _link.link-gray)
-       // $("a.js-card__link").each(function(i, element){
+        // Grab Link 
        console.log("SCRAPING")     
        $(".story-card").each(function(i, element){
             var result = {};
             //Add Text and Href, Save as Properties
+           
             result.title = $(this).find("a.js-card__link")
-                // .children("a")
                 .text();
-            result.link = $(this).find("a.js-card__link")
-                // .children("a")
+           
+                result.link = $(this).find("a.js-card__link")
                 .attr("href");
-             result.img = $(this).find(".card__image.alt src")
-                // .children("a")
+             
+                result.img = $(this).find("img.js-progressive-image")
                 .attr("src");
 
                 result.description = $(this).find("p.js-card__description")
                 
-                // .children("a")
                 .text(); 
-                console.log(result.description, "DESCRIPTION")
+                // console.log(result.description, "DESCRIPTION^^^^^^^^^^^")
+                // console.log(result.img,"IMAGE**************")
             //Create Article
             console.log("creating article...", result)
             db.Article.create(result).then(function(dbArticle){
@@ -86,20 +82,17 @@ app.get("/scrape", function(req, res){
             
         });
        res.redirect("index")
-       console.log("SCRAPE DONE DID")
     });
 });
 
 //GET Articles from Database and display index
 app.get("/index", function(req, res){
-    console.log("/articles GET?????????")
     db.Article.find({saved: false}).then(function(dbArticle){
         //just for info, needs to be in json
         var obj={
             articles: dbArticle
         }
         res.render("index", obj);
-        console.log(obj.articles, "OBJ.Articles")
     }).catch(function(err){
         res.json(err);
     });
@@ -107,12 +100,9 @@ app.get("/index", function(req, res){
 
 // GET Specific Article (by id)
 app.get("/articles/:id", function(req, res){
-    console.log("/articles GET ID", req.params.id)
     db.Article.findOne({_id: req.params.id}).populate("note").then(function(dbArticle){
-        console.log('red')
         res.json(dbArticle);
     }).catch(function(err){
-        console.log('blue')
         res.json(err);
     });
 
@@ -126,7 +116,6 @@ app.post("/articles/:id", function(req, res) {
         return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
       })
       .then(function(dbArticle) {
-          console.log("Article updated successfully******************")
         res.json(dbArticle);
       })
       .catch(function(err) {
@@ -137,9 +126,6 @@ app.post("/articles/:id", function(req, res) {
 
 // PUT Article in Saved Articles
 app.put("/articles/:id", function(req, res){
-    console.log('++++++++++++++++++++++++++');
-    console.log("/articles saved", req.params.id)
-    console.log('++++++++++++++++++++++++++');
 
     db.Article.findOneAndUpdate({ _id: req.params.id},
    {$set:{saved: true}}).then(function(dbArticle){
@@ -154,11 +140,11 @@ app.put("/articles/:id", function(req, res){
 
 // POST Saved Articles to Article Page
 app.post("/articles", function(req, res){
-    console.log("/articles POST")
     db.Article.create(req.body).then(function(dbArticle){
         res.json(dbArticle);
     });
 });
+
 
 // POST Note Belonging to Article
 app.post("/articles/:id", function(req, res){

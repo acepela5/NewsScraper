@@ -1,4 +1,6 @@
 console.log("APP JS IS CONNECTED")
+$(document).ready(function(){
+$('.modal').modal();
 
 //GET articles
 // $.getJSON("/index", function(data){
@@ -9,7 +11,9 @@ console.log("APP JS IS CONNECTED")
 
 // Empty Notes on P Click
 $(document).on("click", "#note", function(){
+    $('#modal1').modal('open');
     $("#notes").empty();
+
     var thisId = $(this).parent().attr("data-id");
 console.log(thisId,"#####thisId#####" )
     //AJAX Call for Articles Page
@@ -19,38 +23,38 @@ console.log(thisId,"#####thisId#####" )
     }).then(function(data){
         console.log(data);
 //opening notes the articles
-        $("#notes").append("<h2>" + data.title + "</h2>");
-        $("#notes").append("<input id='titleinput' name='title' >");
+        $("#notes").append("<h4>" + data.title + "</h4>");
+        $('#notes').append("<label for='bodyinput'>Write your thoughts about this article here!</label>")
         $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
-        $("#notes").append("<button data-id='" + thisId + "' id='savenote'>Save Note</button>");
+       
+        $("#notes").append("<button data-id='" + thisId + "' id='savenote' class='btn orange darken-1'>Save Note</button>");
 console.log(`THIS IS THE THIS ID ${thisId}`)
      
-        // if(data.note) {
-        //   $("#savedtitle").append("<p>" + data.note.title + "</p>");
-        //   $("#savedNotes").append("<p>" + data.note.body + "</p>");
-        //     $("#savedNotes").val(data.note.title);
-        //     $("#savedbody").val(data.note.body);
+        if(data.note) {
+          $("#oldNotes").append("<ul>")
+          $("#oldNotes").append("<li>" + data.note.body + "</li>");
+          $("#oldNotes").append("</ul>")
+            $("#bodyinput").val(data.note.body);
 
-        // }
+        }
     });
 ;})
 
 // On Click Save NOTE
 $(document).on("click", "#savenote", function() {
+  $('.modal').modal('close');
     var thisId = $(this).attr("data-id");
 
     $.ajax({
       method: "POST",
       url: "/articles/" + thisId,
       data: {
-        title: $("#titleinput").val(),
         body: $("#bodyinput").val()
       }
     }).then(function(data) {
         console.log(data);
         $("#notes").empty();
       });
-    $("#titleinput").val("");
     $("#bodyinput").val("");
   });
 
@@ -69,5 +73,7 @@ $(document).on("click", "#saveBtn", function(event){
       
     });
 
+
+});
 
 });

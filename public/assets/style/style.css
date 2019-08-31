@@ -36,22 +36,14 @@
 }
 /* for the hover text%%%%%% */
 /* for the notes ####### */
-#notes {
-  float: right;
-  width: 30%;
+h4 {
+  text-align: center;
 }
-textarea, input {
-  display: block;
-  width: 100%;
-  background-color: #FCF5C7;
-}
-input {
-  height: 36px;
-  font-size: 24px;
-}
-textarea {
-  height: 200px;
-  font-size: 18px;
+
+#savenote {
+  position: relative;
+  left: 500px;
+  top: 10px;
 }
 /* for the notes###### */
 #hive {
@@ -68,4 +60,34 @@ width: 70px;
 
 #deleteBtn, #note, #saveBtn {
   margin-bottom: 50px;
+}
+
+#logoName {
+  height: 800px;
+  width: 800px;
+  position: absolute;
+  z-index: 1;
+  left: -190px;
+  top: -120px;
+}
+
+#flower {
+  height: 100px;
+  width: 100px;
+}
+
+#articleImg {
+  position: relative;
+  z-index: 1;
+  left: -100px;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+#oldNotes {
+position: absolute;
+top: 180px;
 }
