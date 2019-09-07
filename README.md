@@ -13,7 +13,7 @@ Use the Hive's Buzz to scrape the latest stories from BuzzFeed! With materialize
 - Deployed on Heroku
 
 ## Screenshot
-![ ](./)
+![ ](/Screenshot(19).png)
 
 ## Author
 Adi Cepela - https://github.com/acepela5
