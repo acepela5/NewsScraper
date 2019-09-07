@@ -62,13 +62,14 @@ width: 70px;
   margin-bottom: 50px;
 }
 
+
 #logoName {
-  height: 800px;
-  width: 800px;
+  height: 100px;
+  width: 150px;
   position: absolute;
   z-index: 1;
-  left: -190px;
-  top: -120px;
+  left: 30px;
+  top: -25px;
 }
 
 #flower {
