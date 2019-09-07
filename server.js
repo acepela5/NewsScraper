@@ -19,7 +19,7 @@ var PORT = process.env.PORT || 3000;
 // you need to connect mongo from heroku
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 // you need to store it in a variable
-mongoose.connect(MONGODB_URI); (edited) 
+mongoose.connect(MONGODB_URI);// (edited) 
 
 var app = express();
 app.use(express.urlencoded({ extended: true}));
