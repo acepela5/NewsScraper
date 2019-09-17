@@ -169,10 +169,21 @@ app.post("/articles/:id", function(req, res){
 // DELETE Article By Id
 app.delete("/articles/:id", function(req, res){
     console.log("/articles delete")
-    db.Article.destroy({ where: { id: req.params.id}
-    }).then(function(dbArticle){
-        res.json(dbArticle);
-    });
+    db.Article.remove(
+        {
+             _id: mongojs.ObjectID(req.params.id)
+    },
+    function(error, removed){
+        if(error) {
+            console.log(error);
+            res.send(error);
+        }
+        else{
+            console.log(removed);
+            res.send(removed);
+        }
+    }
+    );
 });
 
 
